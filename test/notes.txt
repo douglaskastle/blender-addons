@@ -1,0 +1,9 @@
+http://www.ewocprojects.be/blender.html
+http://www.ewocprojects.be/lwoexport.html
+http://webcache.googleusercontent.com/search?q=cache:F5dPhR2qZ8IJ:blenderartists.org/forum/showthread.php%3F336749-The-LWO-import-export-project/page3+&cd=1&hl=en&ct=clnk&gl=ie
+git://git.blender.org/blender.git
+https://git.blender.org/blender.git
+https://developer.blender.org/T23623
+http://www.ewocprojects.be/io_import_scene_lwo.py
+
+https://wiki.blender.org/wiki/Tools/Git
