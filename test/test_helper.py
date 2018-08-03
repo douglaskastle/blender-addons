@@ -1,9 +1,10 @@
 import bpy
 import os
+import sys
 import re
 import zipfile
 
-def setup(infile, module):
+def setup(infile):
     print("Setting up!")
     name = os.path.basename(infile)
     outfile0 = 'dst_blend/{0}.blend'.format(name)
@@ -32,7 +33,7 @@ def setup(infile, module):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    bpy.ops.wm.addon_enable(module=module)
+
     return(outfile0, outfile1)
 
 def cleanup(module):
@@ -45,12 +46,12 @@ def cleanup(module):
 
 
 
-def copy_plugin(infile):
+def copy_plugin(infile, expect_version=(-1, -1, -1)):
     print("Copying plugin!")
     
     infile = os.path.realpath(infile)
-    head = re.sub(".py", "", os.path.basename(infile))
-    zfile =  os.path.realpath(head + ".zip")
+    module = re.sub(".py", "", os.path.basename(infile))
+    zfile =  os.path.realpath(module + ".zip")
     
     zf = zipfile.ZipFile(zfile, "w")
     if os.path.isdir(infile):
@@ -63,6 +64,20 @@ def copy_plugin(infile):
     zf.close()
     
     bpy.ops.wm.addon_install(overwrite=True, filepath=zfile)
+
+    bpy.ops.wm.addon_enable(module=module)
+
+    #print(bpy.context.user_preferences.addons.keys())
+        
+    mod = sys.modules[module]
+    return_version = mod.bl_info.get('version', (-1, -1, -1))
+    if not expect_version == return_version:
+        print("ERROR, versions do not match:")
+        print("\tnot {0} == {1}".format(expect_version, return_version))
+
+
+    return module
+
  
 #     user = os.environ['USER']
 #     files = glob("C:\\Users\\{0}\\AppData\\Roaming\\Blender Foundation\\Blender\\*\\scripts\\addons".format(user))
